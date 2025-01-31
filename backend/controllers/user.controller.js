@@ -1,5 +1,7 @@
-import { User } from "../models/user.model"
-import bcrypt from "bcrypt.js"
+import { User } from "../models/user.model.js"
+import bcrypt from "bcrypt";
+import  jwt from "jsonwebtoken";
+
 export const register = async (req, res) => {
     try {
         const { fullname, email, phoneNumber, password, role } = req.body;
@@ -29,8 +31,13 @@ export const register = async (req, res) => {
             message: "User created successfully",
             success: true
         })
-    } catch (error) {
+    }
+    catch (error) {
         console.log(error)
+        return res.status(500).json({
+            message: "Internal Server Error",
+            success: false
+        });
     }
 }
 
@@ -85,6 +92,7 @@ export const login = async (req, res) => {
         }
         return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 1000, httpOnly: true, sameSite: 'strict' }).json({
             message: `Welcome back ${user.fullname}`,
+            user,
             success: true
         })
     }
@@ -93,13 +101,63 @@ export const login = async (req, res) => {
     }
 }
 
-export const logout = async(req,res)=>{
+export const logout = async (req, res) => {
     try {
-        return res.status(200).cookie("token","",{maxAge:0}).json({
+        return res.status(200).cookie("token", "", { maxAge: 0 }).json({
             message: "Logged out successfully",
             success: true
         })
-    }catch(error){
+    } catch (error) {
         console.log(error)
+    }
+}
+
+export const updateProfile = async (req, res) => {
+    try {
+        const { fullname, email, phoneNumber, bio, skills } = req.body;
+        const file = req.file;
+
+        //cloudinary
+        let skillsArray;
+        if(skills){
+            skillsArray = skills.split(",");
+        }
+        const userId = req.id;
+
+        let user = await User.findById(userId);
+        if (!user) {
+            return res.status(400).json({
+                message: "User not found",
+                success: false
+            })
+        }
+        //updating data
+       if(fullname) user.fullname = fullname
+       if(email)     user.email = email
+       if(phoneNumber)    user.phoneNumber = phoneNumber
+       if(bio)    user.profile.bio = bio
+       if(skills)    user.profile.skills = skillsArray
+
+        //resume comes later here...
+
+        await user.save();
+
+        user = {
+            _id: user._id,
+            fullname: user.fullname,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            role: user.role,
+            profile: user.profile
+        }
+
+        return res.status(200).json({
+            message: "Profile updated successfully",
+            user,
+            success:true
+        })
+    }
+    catch (error) {
+        console.log(error);
     }
 }
