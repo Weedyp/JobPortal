@@ -5,7 +5,7 @@ import { getCompany, getCompanyById, registerCompany, updateCompany } from "../c
 
 const router = express.Router();
 
-// Correct the route paths
+//router.route(path).method(controller)
 router.route('/register').post(isAuthenticated,registerCompany);
 router.route("/get").get(isAuthenticated,getCompany);
 router.route("/get/:id").get(isAuthenticated, getCompanyById);

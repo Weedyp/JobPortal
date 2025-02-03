@@ -4,7 +4,7 @@ import isAuthenticated from "../middlewares/isAuthenticated.js";
 
 const router = express.Router();
 
-// Correct the route paths
+//router.route(path).method(controller)
 router.route('/register').post(register);
 router.route("/login").post(login);
 router.route("/profile/update").post(isAuthenticated, updateProfile);
