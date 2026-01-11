@@ -1,0 +1,168 @@
+<template>
+  <div class="top-bar-container">
+    <div class="search-wrapper">
+      <span class="search-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </span>
+      <input 
+        type="text" 
+        :placeholder="placeholder" 
+        class="search-input"
+        v-model="localSearch"
+        @input="$emit('search', localSearch)"
+      />
+    </div>
+
+    <div class="user-section">
+      
+      <button class="icon-btn notification-wrapper" @click="$emit('notifications-click')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        <span v-if="hasNotifications" class="badge"></span>
+      </button>
+
+      <div class="profile-wrapper">
+        <span class="username">{{ userName }}</span>
+        <div class="avatar">
+          {{ userInitials }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+// Define Props for reusability
+const props = defineProps({
+  userName: {
+    type: String,
+    default: 'Jake Smith'
+  },
+  userInitials: {
+    type: String,
+    default: 'JS'
+  },
+  hasNotifications: {
+    type: Boolean,
+    default: true
+  },
+  placeholder: {
+    type: String,
+    default: 'Search'
+  }
+});
+
+// Emits for interaction
+defineEmits(['search', 'notifications-click']);
+
+const localSearch = ref('');
+</script>
+
+<style scoped>
+/* Main Container */
+.top-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb; /* Optional: adds a subtle separator at bottom */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Search Bar Styling */
+.search-wrapper {
+  position: relative;
+  width: 300px; /* Adjust width as needed */
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 10px 10px 38px; /* Left padding makes room for icon */
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: #6366f1; /* Purple focus color */
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+/* User Section Styling */
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-wrapper {
+  position: relative;
+}
+
+/* The Red Dot */
+.badge {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  width: 8px;
+  height: 8px;
+  background-color: #ef4444; /* Red color */
+  border-radius: 50%;
+  border: 1.5px solid white; /* Makes the dot pop */
+}
+
+.profile-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.username {
+  font-size: 14px;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+/* The Avatar Circle */
+.avatar {
+  width: 36px;
+  height: 36px;
+  background-color: #4f46e5; /* The purple from your image */
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+</style>
