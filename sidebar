@@ -1,0 +1,265 @@
+<template>
+  <aside :class="['sidebar', { 'sidebar-collapsed': !isExpanded }]">
+    
+    <div class="sidebar-header">
+      <transition name="fade">
+        <span v-show="isExpanded" class="logo-text">Nexus App</span>
+      </transition>
+      
+      <button class="toggle-btn" @click="toggleSidebar" aria-label="Toggle Sidebar">
+        <svg v-if="isExpanded" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon-toggle"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+        <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon-toggle"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+      </button>
+    </div>
+
+    <ul class="feature-list">
+      <li v-for="(item, index) in features" :key="index" class="feature-item">
+        <a href="#" class="feature-link">
+          <div class="icon-wrapper" v-html="item.icon"></div>
+          
+          <transition name="fade">
+            <div v-show="isExpanded" class="text-content">
+              <div class="feature-name">{{ item.name }}</div>
+              <div class="feature-desc">{{ item.desc }}</div>
+            </div>
+          </transition>
+        </a>
+      </li>
+    </ul>
+    
+    <div class="user-footer">
+          <div class="avatar">JS</div>
+          <transition name="fade">
+            <div v-show="isExpanded" class="text-content">
+               <div class="feature-name">Jake Smith</div>
+               <div class="feature-desc">Pro Workspace</div>
+            </div>
+          </transition>
+     </div>
+  </aside>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+const isExpanded = ref(true);
+
+const toggleSidebar = () => {
+  isExpanded.value = !isExpanded.value;
+};
+
+const features = [
+  { 
+    name: 'Dashboard', 
+    desc: 'General activity overview', 
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>' 
+  },
+  { 
+    name: 'Lists', 
+    desc: 'View internal and dynamic lists', 
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>' 
+  },
+  { 
+    name: 'Projects', 
+    desc: 'Active tasks & kanban', 
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3" /></svg>' 
+  },
+  { 
+    name: 'Team', 
+    desc: 'Members & permissions', 
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.165A9.37 9.37 0 0020.25 10.5c0-5.18-4.029-9.375-9-9.375S2.25 5.32 2.25 10.5a9.37 9.37 0 005.25 8.665M10.5 15.75a3 3 0 11-6 0 3 3 0 016 0zm4.5 0a3 3 0 11-6 0 3 3 0 016 0zm4.5 0a3 3 0 11-6 0 3 3 0 016 0z" /></svg>' 
+  },
+  { 
+    name: 'Documents', 
+    desc: 'File storage hub', 
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg>' 
+  },
+  { 
+    name: 'Settings', 
+    desc: 'System preferences', 
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.773c.341.341.42.86.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.11v1.093c0 .55-.398 1.02-.94 1.11l-.894.149c-.424.07-.764.384-.93.78-.165.398-.143.855.108 1.205l.527.737c.3.59.221 1.109-.12 1.45l-.773.773a1.125 1.125 0 01-1.45.12l-.737.527c-.35-.25-.806-.272-1.204-.107-.397.165-.71.505-.78.93l-.15.893zM15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>' 
+  },
+];
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e2e8f0;
+  --text-primary: #1e293b;
+  --text-secondary: #94a3b8;
+  --accent-color: #4f46e5;
+  --hover-bg: #f8fafc;
+  --expanded-width: 280px; /* Slightly wider to accommodate description */
+  --collapsed-width: 80px;
+}
+
+.sidebar {
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: var(--expanded-width);
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  padding: 20px 12px;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.sidebar-collapsed {
+  width: var(--collapsed-width);
+  padding: 20px 8px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  padding: 0 8px;
+  height: 40px;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1e293b;
+  white-space: nowrap;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 6px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-btn:hover {
+  background-color: var(--hover-bg);
+  color: #1e293b;
+}
+
+.icon-toggle {
+  width: 24px;
+  height: 24px;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  overflow-y: auto; 
+  scrollbar-width: none; 
+}
+
+.feature-item {
+  margin-bottom: 8px; /* Slightly more space for the double text lines */
+}
+
+.feature-link {
+  display: flex;
+  align-items: center; /* Vertically center icon relative to text stack */
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 12px;
+  transition: background-color 0.2s;
+}
+
+.feature-link:hover {
+  background-color: var(--hover-bg);
+}
+
+/* --- NEW ICON STYLING (The Circle) --- */
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Fixed Dimensions for the circle */
+  width: 42px; 
+  height: 42px;
+  min-width: 42px; /* Prevent squishing */
+  border-radius: 50%;
+  /* Colors from image */
+  background-color: #eef2ff; /* Very light purple/indigo */
+  color: #6366f1; /* Indigo icon */
+  transition: all 0.2s;
+}
+
+/* Icon size inside the circle */
+.icon-wrapper :deep(svg) {
+  width: 22px;
+  height: 22px;
+}
+
+.feature-link:hover .icon-wrapper {
+  background-color: #e0e7ff; /* Slightly darker on hover */
+  color: #4338ca;
+}
+
+/* --- NEW TEXT STYLING --- */
+.text-content {
+  margin-left: 14px;
+  display: flex;
+  flex-direction: column; /* Stack text vertically */
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.feature-name {
+  font-weight: 600; /* Bold title */
+  font-size: 0.95rem;
+  color: #334155; /* Dark grey/black */
+  line-height: 1.2;
+}
+
+.feature-desc {
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: #94a3b8; /* Light grey description */
+  margin-top: 2px;
+}
+
+/* Footer styling */
+.user-footer {
+  border-top: 1px solid var(--sidebar-border);
+  padding: 20px 8px 0 8px;
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(-5px); 
+}
+</style>
